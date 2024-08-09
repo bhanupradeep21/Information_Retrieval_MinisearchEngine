@@ -1,0 +1,66 @@
+
+Project Title: WikipediaQA - Biology Domain Question and Answer System
+-------------
+
+Description:
+-----------
+
+WikipediaQA is a question and answer system tailored for the biology domain, utilizing web scraping techniques to extract and process data from Wikipedia. The system generates individual documents for each link, eliminates duplicates, and employs the nltk library for text processing. The resulting cleaned dataset is stored, and an inverted index is calculated, ensuring an efficient question and answer retrieval mechanism.
+
+Key Features:
+------------
+
+Web Scraping from Wikipedia:
+---------------------------
+
+The system begins by collecting a curated set of webpages from Wikipedia related to the biology domain. Using web scraping techniques, it extracts valuable content and URLs for further processing.
+Data Extraction and Document Creation:
+
+Each collected link is processed to extract meaningful data. The project creates individual documents for each link, ensuring a comprehensive representation of the biology-related content.
+Duplicate Removal and Text Processing:
+
+To enhance the quality of the dataset, the system employs the Natural Language Toolkit (nltk) library to perform text processing. This involves removing duplicates and applying various text processing techniques to improve the overall dataset's cleanliness.
+
+Cleaned Text Folder:
+-------------------
+
+The processed and refined documents are stored systematically in a 'Cleaned Text' folder, making the dataset easily accessible and organized.
+
+Inverted Index Calculation:
+--------------------------
+
+The project implements an inverted index to efficiently map terms to the documents they appear in. This allows for rapid information retrieval and enhances the system's overall search capabilities.
+Document Ranking:
+
+Leveraging the inverted index, the system calculates document rankings based on the relevance of the content to a given query. This ensures that users receive the most pertinent information first.
+
+User Query Interface:
+--------------------
+
+BioSearch provides a user-friendly interface where users can input their queries. The system then retrieves and ranks the most relevant documents based on the entered query.
+
+Technologies Used:
+--------------------
+
+Web scraping tools (e.g., BeautifulSoup)
+Natural Language Toolkit (nltk) library
+Inverted index implementation
+scikit-learn
+sumy
+flask
+numpy
+User interface (e.g., command-line or graphical interface)
+
+Potential Extensions:
+--------------------
+
+Integration with a web-based interface for broader accessibility.
+Implementation of machine learning algorithms for further query refinement.
+Continuous updating of the dataset to ensure the inclusion of the latest biological information.
+BioSearch is designed to be a powerful and intuitive tool for researchers, students, and enthusiasts in the field of biology, providing a streamlined approach to accessing and retrieving valuable information from diverse online sources.
+
+
+Contributions:-
+-------------
+
+        I Done This Project by my own   

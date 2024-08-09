@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <!-- Add your CSS styles here if needed -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        #search-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        #search-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        #searchQuery {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 15px;
+            font-size: 16px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        #results-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        #resultsList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #ecf0f1;
+            position: relative;
+        }
+
+        .not-relevant-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .read-more-link {
+            color: black;
+            cursor: pointer;
+        }
+
+        /* Styles for the redirected page */
+        #full-answer-container {
+            /* max-width: 800px; */
+            width: 400px;
+            border:30px #f5f5f5;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2.full-answer-heading {
+            color: #3498db;
+        }
+
+        p.full-answer-content {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <form id="search-form">
+            <label for="searchQuery">Enter your query:</label>
+            <input type="text" id="searchQuery" name="query">
+            <button type="button" onclick="search()">Search</button>
+        </form>
+    </div>
+
+    <div id="results-container">
+        <h2>Search Results:</h2>
+        <ul id="resultsList"></ul>
+    </div>
+
+    <!-- Your existing HTML and CSS code... -->
+
+<script>
+    function search() {
+        const query = document.getElementById("searchQuery").value;
+
+        // Make an AJAX request to the Flask backend API
+        fetch('http://127.0.0.1:5000/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: query })
+        })
+        .then(response => response.json())
+        .then(data => displayResults(data.results))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function displayResults(results) {
+        const resultsList = document.getElementById("resultsList");
+        resultsList.innerHTML = "";
+
+        results.forEach((result, index) => {
+            const additionalText = "";
+
+            // Check if the result needs a "Read More" link
+            if (result.length > 300) { // Adjust the character limit as needed
+                const readMoreLink = document.createElement("div");
+                readMoreLink.className = "read-more-link";
+                readMoreLink.innerHTML = `${additionalText} ${result.substring(0, 500)}... <a href="javascript:void(0);" onclick="showFullAnswer('${result}')">Read More</a>`;
+
+                const notRelevantButton = document.createElement("button");
+                notRelevantButton.className = "not-relevant-button";
+                notRelevantButton.textContent = "Not Relevant";
+                notRelevantButton.onclick = function() {
+                    removeResult(listItem);
+                };
+
+                const listItem = document.createElement("li");
+                listItem.className = "result-item";
+                listItem.appendChild(readMoreLink);
+                listItem.appendChild(notRelevantButton);
+
+                resultsList.appendChild(listItem);
+            } else {
+                // If the result is shorter than the limit, display it without "Read More"
+                const listItem = document.createElement("li");
+                listItem.className = "result-item";
+                listItem.innerHTML = `<div>${additionalText} ${result}</div>`;
+                
+                const notRelevantButton = document.createElement("button");
+                notRelevantButton.className = "not-relevant-button";
+                notRelevantButton.textContent = "Not Relevant";
+                notRelevantButton.onclick = function() {
+                    removeResult(listItem);
+                };
+
+                listItem.appendChild(notRelevantButton);
+
+                resultsList.appendChild(listItem);
+            }
+        });
+    }
+
+    function removeResult(listItem) {
+        listItem.remove();
+    }
+
+    function showFullAnswer(answer) {
+        // Open a new window with the full answer
+        const fullAnswerWindow = window.open("", "_blank");
+
+        // Create the full answer content
+        const fullAnswerContent = `
+            <div id="full-answer-container">
+                <h2 class="full-answer-heading">Full Answer</h2>
+                <p class="full-answer-content">${answer}</p>
+            </div>
+        `;
+
+        // Write the content to the new window
+        fullAnswerWindow.document.write(fullAnswerContent);
+    }
+</script>
+
+<!-- Your existing HTML code... -->
+
+</body>
+</html>
+
+
+
+
